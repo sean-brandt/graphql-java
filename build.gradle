@@ -128,6 +128,16 @@ publishing {
             }
         }
     }
+
+    repositories {
+        maven {
+            url "${geico_repo_base_url}/maven-3rdparty-local"
+            credentials {
+                username = "${geico_repo_username}"
+                password = "${geico_repo_password}"
+            }
+        }
+    }
 }
 
 
