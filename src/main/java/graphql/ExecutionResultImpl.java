@@ -1,26 +1,23 @@
 package graphql;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ExecutionResultImpl implements ExecutionResult {
 
     private final List<GraphQLError> errors = new ArrayList<GraphQLError>();
     private Object data;
-    private Map<Object,Object> extensions = null;
+    private Map<Object, Object> extensions = null;
 
     public ExecutionResultImpl(List<? extends GraphQLError> errors) {
-        this(null,errors,null);
+        this(null, errors, null);
     }
 
     public ExecutionResultImpl(Object data, List<? extends GraphQLError> errors) {
-        this(data,errors,null);
+        this(data, errors, null);
     }
 
-    public ExecutionResultImpl(Object data, List<? extends GraphQLError> errors, Map<Object,Object> extensions) {
+    public ExecutionResultImpl(Object data, List<? extends GraphQLError> errors, Map<Object, Object> extensions) {
         this.data = data;
 
         if (errors != null && !errors.isEmpty()) {
@@ -28,7 +25,7 @@ public class ExecutionResultImpl implements ExecutionResult {
         }
 
         if (extensions != null && !extensions.isEmpty()) {
-            this.extensions = new HashMap<Object,Object>(extensions);
+            this.extensions = new HashMap<Object, Object>(extensions);
         }
     }
 
@@ -37,7 +34,11 @@ public class ExecutionResultImpl implements ExecutionResult {
     }
 
     public void addExtensions(Map<Object, Object> extensions) {
-        this.extensions.putAll(extensions);
+        if (this.extensions != null) {
+            this.extensions.putAll(extensions);
+        } else {
+            this.extensions = new LinkedHashMap<Object, Object>(extensions);
+        }
     }
 
 
@@ -58,6 +59,9 @@ public class ExecutionResultImpl implements ExecutionResult {
 
     @Override
     public Map<Object, Object> getExtensions() {
-        return extensions == null ? null : new HashMap<Object,Object>(extensions);
+        if (extensions == null) {
+            extensions = new LinkedHashMap<Object, Object>();
+        }
+        return extensions;
     }
 }
