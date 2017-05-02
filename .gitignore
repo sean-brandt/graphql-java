@@ -3,6 +3,8 @@
 .gradle
 build
 _site
+generated-src/
+
 bin/
 .classpath
 .project
